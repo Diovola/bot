@@ -1,13 +1,14 @@
 import os
 import discord
 import requests
-import threading
 import time
 from discord.ext import commands
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from flask import Flask
+from threading import Thread
 
-# 啟用必要的 Intents
+# === Discord Intents ===
 intents = discord.Intents.default()
 intents.voice_states = True
 intents.guilds = True
@@ -15,6 +16,7 @@ intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+# === Discord 事件 ===
 @bot.event
 async def on_ready():
     print(f"✅ Bot 已登入為 {bot.user}")
@@ -23,13 +25,13 @@ async def on_ready():
 async def on_voice_state_update(member, before, after):
     current_time = datetime.now(ZoneInfo("Asia/Taipei")).strftime("%H:%M")
 
-    # 確定哪邊有 guild（因為離開語音頻道時 after.channel 會是 None）
+    # 找出 guild
     guild = after.channel.guild if after.channel else before.channel.guild
 
     # 找到目標文字頻道
     text_channel = discord.utils.get(guild.text_channels, name="簽到表")
     if text_channel is None:
-        text_channel = guild.text_channels[0]  # 備用方案：第一個文字頻道
+        text_channel = guild.text_channels[0]
 
     # 加入語音頻道
     if before.channel is None and after.channel is not None:
@@ -46,7 +48,7 @@ async def on_voice_state_update(member, before, after):
         msg = f"> 🔄 {member.display_name} 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
         await text_channel.send(msg)
 
-# --- Ping 自己的 Render 網址 ---
+# === 自動 Ping Render 網址 ===
 def self_ping():
     url = os.getenv("RENDER_EXTERNAL_URL", "https://bot-1-oxob.onrender.com")
     while True:
@@ -57,19 +59,19 @@ def self_ping():
             print(f"⚠️ Ping 失敗：{e}")
         time.sleep(300)  # 每 5 分鐘一次
 
-# 開啟保活執行緒
-threading.Thread(target=self_ping, daemon=True).start()
+# === Flask 保活伺服器 ===
+app = Flask(__name__)
 
-# 啟動 Bot（使用環境變數中儲存的 Token）
-bot.run("MTQzNzc3OTM5NzQzOTUyNDk0NQ.GGHEwK.qzfKAYl4APf2xEFshgXJ8qS-YUhFDi0oacacps")
+@app.route('/')
+def home():
+    return "✅ Bot is alive!"
 
+def run_flask():
+    app.run(host='0.0.0.0', port=8080)
 
+# === 啟動 Flask & 自我 Ping ===
+Thread(target=run_flask, daemon=True).start()
+Thread(target=self_ping, daemon=True).start()
 
-
-
-
-
-
-
-
-
+# === 啟動 Discord Bot ===
+bot.run(os.getenv("DISCORD_TOKEN"))
