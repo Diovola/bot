@@ -2,11 +2,14 @@ import os
 import discord
 import requests
 import time
+import sys
 from discord.ext import commands
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from flask import Flask
 from threading import Thread
+
+print("Python version:", sys.version)
 
 # === Discord Intents ===
 intents = discord.Intents.default()
@@ -75,3 +78,4 @@ Thread(target=self_ping, daemon=True).start()
 
 # === 啟動 Discord Bot ===
 bot.run(os.getenv("DISCORD_TOKEN"))
+
