@@ -1,14 +1,15 @@
 # Discord bot 核心套件
-discord.py==2.4.1
+discord.py==2.4.0
 
 # Flask 用於 Web server
-Flask==2.3.3
+Flask==2.2.3
 
 # HTTP 請求工具
-requests==2.31.0
+requests
 
 # 時區處理（如果你的程式有用到）
-pytz==2023.3
+pytz
 
 # 可選：定時任務用（如果有用到 time / schedule）
-schedule==1.2.0
+schedule
+
