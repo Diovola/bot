@@ -46,7 +46,7 @@ async def on_voice_state_update(member, before, after):
 
 # --- Ping 自己的 Render 網址 ---
 def keep_alive():
-    url = "https://你的render應用名稱.onrender.com"  # 改成你的 Render 網址
+    url = "https://bot-1-oxob.onrender.com"  # 改成你的 Render 網址
     while True:
         try:
             requests.get(url)
@@ -60,6 +60,7 @@ threading.Thread(target=keep_alive, daemon=True).start()
 
 # 啟動 Bot（使用環境變數中儲存的 Token）
 bot.run("MTQzNzc3OTM5NzQzOTUyNDk0NQ.GGHEwK.qzfKAYl4APf2xEFshgXJ8qS-YUhFDi0oacacps")
+
 
 
 
