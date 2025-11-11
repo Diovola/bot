@@ -67,7 +67,7 @@ def run_flask():
 
 # === 自我 Ping ===
 def self_ping():
-    url = os.getenv("RENDER_EXTERNAL_URL", "http://localhost:8080")
+    url = os.getenv("https://bot-1-oxob.onrender.com", "http://localhost:8080")
     while True:
         try:
             res = requests.get(url)
@@ -87,3 +87,4 @@ if not token:
     sys.exit(1)
 
 bot.run(token)
+
