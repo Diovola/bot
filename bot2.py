@@ -2,6 +2,7 @@ import os
 import discord
 import requests
 import threading
+import time
 from discord.ext import commands
 from datetime import datetime
 
@@ -60,6 +61,7 @@ threading.Thread(target=keep_alive, daemon=True).start()
 
 # 啟動 Bot（使用環境變數中儲存的 Token）
 bot.run("MTQzNzc3OTM5NzQzOTUyNDk0NQ.GGHEwK.qzfKAYl4APf2xEFshgXJ8qS-YUhFDi0oacacps")
+
 
 
 
