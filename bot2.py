@@ -41,17 +41,20 @@ async def on_voice_state_update(member, before, after):
 
     # 加入語音頻道
     if before.channel is None and after.channel is not None:
-        msg = f"> 🎧 {member.display_name} 在 {current_time} 加入了語音頻道 <#{after.channel.id}>"
+        msg = f"> ## 🎧 {member.display_name}
+> 在 {current_time}加入了<#{after.channel.id}>"
         await text_channel.send(msg)
 
     # 離開語音頻道
     elif before.channel is not None and after.channel is None:
-        msg = f"> 👋 {member.display_name} 在 {current_time} 離開了語音頻道 <#{before.channel.id}>"
+        msg = f"> 👋 {member.display_name} 
+> 在 {current_time} 離開了語音頻道 <#{before.channel.id}>"
         await text_channel.send(msg)
 
     # 在語音頻道之間移動
     elif before.channel != after.channel:
-        msg = f"> 🔄 {member.display_name} 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
+        msg = f"> 🔄 {member.display_name} 
+> 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
         await text_channel.send(msg)
 
 # === Flask 保活伺服器 ===
@@ -87,4 +90,5 @@ if not token:
     sys.exit(1)
 
 bot.run(token)
+
 
