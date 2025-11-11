@@ -5,6 +5,7 @@ import threading
 import time
 from discord.ext import commands
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 # 啟用必要的 Intents
 intents = discord.Intents.default()
@@ -20,7 +21,7 @@ async def on_ready():
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    current_time = datetime.now().strftime("%H:%M")
+    current_time = datetime.now(ZoneInfo("Asia/Taipei")).strftime("%H:%M")
 
     # 確定哪邊有 guild（因為離開語音頻道時 after.channel 會是 None）
     guild = after.channel.guild if after.channel else before.channel.guild
@@ -32,12 +33,12 @@ async def on_voice_state_update(member, before, after):
 
     # 加入語音頻道
     if before.channel is None and after.channel is not None:
-        msg = f"> 🎧 <@{member.id}> 在 {current_time} 加入了語音頻道 <#{after.channel.id}>"
+        msg = f"> 🎧 {member.display_name} 在 {current_time} 加入了語音頻道 <#{after.channel.id}>"
         await text_channel.send(msg)
 
     # 離開語音頻道
     elif before.channel is not None and after.channel is None:
-        msg = f"> 👋 <@{member.id}> 在 {current_time} 離開了語音頻道 <#{before.channel.id}>"
+        msg = f"> 👋 {member.display_name} 在 {current_time} 離開了語音頻道 <#{before.channel.id}>"
         await text_channel.send(msg)
 
     # 在語音頻道之間移動
@@ -61,6 +62,7 @@ threading.Thread(target=keep_alive, daemon=True).start()
 
 # 啟動 Bot（使用環境變數中儲存的 Token）
 bot.run("MTQzNzc3OTM5NzQzOTUyNDk0NQ.GGHEwK.qzfKAYl4APf2xEFshgXJ8qS-YUhFDi0oacacps")
+
 
 
 
