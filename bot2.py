@@ -47,13 +47,13 @@ async def on_voice_state_update(member, before, after):
 
     # 離開語音頻道
     elif before.channel is not None and after.channel is None:
-        msg = f"> 👋 {member.display_name} 
+        msg = f"> ## 👋 {member.display_name} 
 > 在 {current_time} 離開了語音頻道 <#{before.channel.id}>"
         await text_channel.send(msg)
 
     # 在語音頻道之間移動
     elif before.channel != after.channel:
-        msg = f"> 🔄 {member.display_name} 
+        msg = f"> ## 🔄 {member.display_name} 
 > 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
         await text_channel.send(msg)
 
@@ -90,5 +90,6 @@ if not token:
     sys.exit(1)
 
 bot.run(token)
+
 
 
