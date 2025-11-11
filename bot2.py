@@ -25,7 +25,7 @@ async def on_voice_state_update(member, before, after):
     guild = after.channel.guild if after.channel else before.channel.guild
 
     # 找到目標文字頻道
-    text_channel = discord.utils.get(guild.text_channels, name="msia-branch")
+    text_channel = discord.utils.get(guild.text_channels, name="簽到表")
     if text_channel is None:
         text_channel = guild.text_channels[0]  # 備用方案：第一個文字頻道
 
@@ -60,5 +60,6 @@ threading.Thread(target=keep_alive, daemon=True).start()
 
 # 啟動 Bot（使用環境變數中儲存的 Token）
 bot.run("MTQzNzc3OTM5NzQzOTUyNDk0NQ.GGHEwK.qzfKAYl4APf2xEFshgXJ8qS-YUhFDi0oacacps")
+
 
 
