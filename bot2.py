@@ -43,7 +43,7 @@ async def on_voice_state_update(member, before, after):
 
     # 在語音頻道之間移動
     elif before.channel != after.channel:
-        msg = f"> 🔄 <@{member.id}> 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
+        msg = f"> 🔄 {member.display_name} 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
         await text_channel.send(msg)
 
 # --- Ping 自己的 Render 網址 ---
@@ -62,6 +62,7 @@ threading.Thread(target=keep_alive, daemon=True).start()
 
 # 啟動 Bot（使用環境變數中儲存的 Token）
 bot.run("MTQzNzc3OTM5NzQzOTUyNDk0NQ.GGHEwK.qzfKAYl4APf2xEFshgXJ8qS-YUhFDi0oacacps")
+
 
 
 
