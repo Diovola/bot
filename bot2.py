@@ -1,5 +1,7 @@
 import os
 import discord
+import requests
+import threading
 from discord.ext import commands
 from datetime import datetime
 
@@ -42,5 +44,21 @@ async def on_voice_state_update(member, before, after):
         msg = f"> 🔄 <@{member.id}> 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
         await text_channel.send(msg)
 
+# --- Ping 自己的 Render 網址 ---
+def keep_alive():
+    url = "https://你的render應用名稱.onrender.com"  # 改成你的 Render 網址
+    while True:
+        try:
+            requests.get(url)
+            print(f"✅ Ping 成功：{url}")
+        except Exception as e:
+            print(f"⚠️ Ping 失敗：{e}")
+        time.sleep(300)  # 每 5 分鐘一次
+
+# 開啟保活執行緒
+threading.Thread(target=keep_alive, daemon=True).start()
+
 # 啟動 Bot（使用環境變數中儲存的 Token）
 bot.run("MTQzNzc3OTM5NzQzOTUyNDk0NQ.GGHEwK.qzfKAYl4APf2xEFshgXJ8qS-YUhFDi0oacacps")
+
+
