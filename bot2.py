@@ -51,7 +51,7 @@ async def on_voice_state_update(member, before, after):
 
     # 在語音頻道之間移動
     elif before.channel != after.channel:
-        msg = f"> ## 🔄 {member.display_name} ''' 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
+        msg = f"> ## 🔄 {member.display_name}\n> 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
         await text_channel.send(msg)
 
 # === Flask 保活伺服器 ===
@@ -87,6 +87,7 @@ if not token:
     sys.exit(1)
 
 bot.run(token)
+
 
 
 
