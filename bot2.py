@@ -1,0 +1,46 @@
+import os
+import discord
+from discord.ext import commands
+from datetime import datetime
+
+# 啟用必要的 Intents
+intents = discord.Intents.default()
+intents.voice_states = True
+intents.guilds = True
+intents.members = True
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f"✅ Bot 已登入為 {bot.user}")
+
+@bot.event
+async def on_voice_state_update(member, before, after):
+    current_time = datetime.now().strftime("%H:%M")
+
+    # 確定哪邊有 guild（因為離開語音頻道時 after.channel 會是 None）
+    guild = after.channel.guild if after.channel else before.channel.guild
+
+    # 找到目標文字頻道
+    text_channel = discord.utils.get(guild.text_channels, name="msia-branch")
+    if text_channel is None:
+        text_channel = guild.text_channels[0]  # 備用方案：第一個文字頻道
+
+    # 加入語音頻道
+    if before.channel is None and after.channel is not None:
+        msg = f"> 🎧 <@{member.id}> 在 {current_time} 加入了語音頻道 <#{after.channel.id}>"
+        await text_channel.send(msg)
+
+    # 離開語音頻道
+    elif before.channel is not None and after.channel is None:
+        msg = f"> 👋 <@{member.id}> 在 {current_time} 離開了語音頻道 <#{before.channel.id}>"
+        await text_channel.send(msg)
+
+    # 在語音頻道之間移動
+    elif before.channel != after.channel:
+        msg = f"> 🔄 <@{member.id}> 在 {current_time} 從 <#{before.channel.id}> 移動到 <#{after.channel.id}>"
+        await text_channel.send(msg)
+
+# 啟動 Bot（使用環境變數中儲存的 Token）
+bot.run("MTQzNzc3OTM5NzQzOTUyNDk0NQ.GGHEwK.qzfKAYl4APf2xEFshgXJ8qS-YUhFDi0oacacps")
