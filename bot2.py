@@ -58,10 +58,11 @@ def self_ping():
         time.sleep(300)  # 每 5 分鐘一次
 
 # 開啟保活執行緒
-threading.Thread(target=keep_alive, daemon=True).start()
+threading.Thread(target=self_ping, daemon=True).start()
 
 # 啟動 Bot（使用環境變數中儲存的 Token）
 bot.run("MTQzNzc3OTM5NzQzOTUyNDk0NQ.GGHEwK.qzfKAYl4APf2xEFshgXJ8qS-YUhFDi0oacacps")
+
 
 
 
